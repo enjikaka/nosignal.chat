@@ -35,7 +35,7 @@ function AppRouter() {
         });
       });
 
-    } else if (navigator.serviceWorker.controller !== null) {
+    } else if (navigator.serviceWorker && navigator.serviceWorker.controller !== null) {
       hostElement.innerHTML = 'Sidan finns ej.';
     }
     console.timeEnd('renderRoute');
