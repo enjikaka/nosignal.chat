@@ -1,0 +1,33 @@
+@import url('./fonts.css');
+
+:root {
+  --gr-rem: 1.61803398875rem;
+  --gr-em: 1.61803398875em;
+}
+
+body {
+  margin: 0;
+  background-color: #fff;
+  position: relative;
+}
+
+html,
+body,
+.wrapper {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrapper {
+  position: relative;
+  padding: var(--gr-rem) auto;
+  display: flex;
+}
+
+app-router {
+  flex: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  will-change: scroll-position;
+}

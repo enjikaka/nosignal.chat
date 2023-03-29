@@ -1,0 +1,57 @@
+main {
+    position: relative;
+}
+
+.bg {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  filter: blur(5px);
+  position: fixed;
+  inset: -128px;
+  z-index: -1;
+  contain: strict;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  background-color: hsla(0deg 0% 93.33% / 80%);
+  backdrop-filter: blur(8px);
+  padding-left: 1em;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  height: 64px;
+  contain: strict;
+  contain-intrinsic-height: 64px;
+  contain-intrinsic-width: 100vw;
+  color: #333;
+  z-index: 1;
+}
+
+conversation-messages {
+    height: 100%;
+    display: block;
+    flex: 1;
+    padding-bottom: 64px;
+}
+
+conversation-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: hsla(0deg 0% 93.33% / 80%);
+    backdrop-filter: blur(8px);
+}
+
+nostr-profile-row {
+  flex: 1;
+}
+
+router-link {
+  width: 16px;
+  height: 16px;
+}

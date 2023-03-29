@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async src="https://unpkg.com/es-module-shims@0.13.1/dist/es-module-shims.js"></script>
+    <link rel="preload" href="/css/Mona-Sans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/main.css">
+    <title>nosignal</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!--<app-nav></app-nav>-->
+        <app-router></app-router>
+    </div>
+    <script type="importmap">
+    {
+      "imports": {
+        "webact": "https://cdn.skypack.dev/webact",
+        "@github/relative-time-element": "https://cdn.skypack.dev/@github/relative-time-element"
+      }
+    }
+  </script>
+    <script async type="module" src="https://unpkg.com/@github/relative-time-element@4.2.1"></script>
+    <script src="/js/app.js" type="module"></script>
+    <script>
+        const mainEl = document.querySelector('main');
+
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            const mainEl = document.querySelector('app-router');
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', async () => {
+                const registration = await navigator.serviceWorker.register('/sw.js', {
+                    type: 'module'
+                });
+
+                if (registration.waiting) {
+                    document.location.reload();
+                }
+
+                if (registration.installing) {
+                    mainEl.textContent = 'Installing required modules...';
+
+                    registration.installing.onstatechange = e => {
+                        if (e.target.state === 'activating') {
+                            mainEl.textContent = 'Activating modules...';
+                        }
+
+                        if (e.target.state === 'activated') {
+                            mainEl.textContent = 'Done.';
+                            document.location.reload();
+                        }
+                    };
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
