@@ -48,7 +48,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request }) => request.url.includes('/api/updates/'),
+  ({ request }) => request.url.includes('/api/updates'),
   async ({ request }) => APIRoutes.updatesHandler(request)
 );
 
