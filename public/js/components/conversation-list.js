@@ -38,11 +38,11 @@ function ConversationList() {
 
     const nsec = sessionStorage.getItem('nsec');
     const privateKey = await nostrWorker('decodePrivateKey', nsec);
-    const publicKey = await nostrWorker('getPublicKey', privateKey);
+    // const publicKey = await nostrWorker('getPublicKey', privateKey);
 
-    const $conversationEl = json.filter(p => p !== publicKey).map(publicKeyToConversationLink).join('');
+    const $conversations = json.map(publicKeyToConversationLink);
 
-    $conversationEl.forEach($convEl => requestAnimationFrame(() => $section.appendChild($convEl)));
+    $conversations.forEach($conversation => requestAnimationFrame(() => $section.appendChild($conversation)));
 
     const es = new EventSource('/api/updates');
 
