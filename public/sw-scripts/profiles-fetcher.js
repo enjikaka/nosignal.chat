@@ -1,4 +1,4 @@
-import { nostrTools } from '../workers/modules.js';
+import { nostrTools } from '../workers/nostr.js';
 // import { sa } from './db/models/profile.js';
 
 const pool = new nostrTools.SimplePool();

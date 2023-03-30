@@ -1,4 +1,4 @@
-import { nostrTools } from '../workers/modules.js';
+import { nostrTools } from '../workers/nostr.js';
 import { saveMessage } from './db/models/message.js';
 import { updates } from './helpers.js';
 

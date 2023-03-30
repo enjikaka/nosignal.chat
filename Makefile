@@ -1,6 +1,6 @@
 build:
 	npx esbuild workbox-modules.js --outfile=public/sw-scripts/modules.js --bundle --format=esm
-	npx esbuild src/worker-modules.js --outfile=public/workers/modules.js --bundle --format=esm
+	npx esbuild src/nostr-worker.js --outfile=public/workers/nostr.js --bundle --format=esm
 	npx workbox injectManifest workbox-config.cjs
 
 dev: build
