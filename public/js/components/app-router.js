@@ -49,16 +49,6 @@ function AppRouter() {
       }
     });
 
-    if (navigator.serviceWorker.controller !== null && sessionStorage.getItem('nsec') === null)  {
-      document.dispatchEvent(new CustomEvent('router:navigate', {
-        detail: {
-          pathname: '/login'
-        }
-      }));
-
-      return;
-    }
-
     window.addEventListener('popstate', () => renderRoute(document.location.pathname + document.location.search), false);
 
     renderRoute(document.location.pathname + document.location.search);

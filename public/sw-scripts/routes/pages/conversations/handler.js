@@ -15,20 +15,29 @@ export default async function handler(request) {
   startMutualSubscription(publicKey, account.id);
 
   return html`
+    <script>
+    if (navigator.serviceWorker.controller !== null && sessionStorage.getItem('nsec') === null) {
+      document.dispatchEvent(new CustomEvent('router:navigate', {
+        detail: {
+          pathname: '/login'
+        }
+      }));
+    }
+    </script>
     <script src="/js/components/conversation-form.js"></script>
     <script src="/js/components/conversation-messages.js"></script>
     <script src="/js/components/nostr-profile-row.js"></script>
     <link rel="stylesheet" href="/css/conversations-page.css">
     <main>
-    <div class="bg" style="background-image:url('${profile.banner}')"></div>
-    <header>
-      <router-link href="/">
-        <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M10 14L3 7.5 10 1" stroke="currentColor" stroke-linecap="square"></path></svg>
-      </router-link>
-      <nostr-profile-row public-key="${publicKey}"${publicKey === account.id ? 'self="self"' : ''}></nostr-profile-row>
-    </header>
-    <conversation-messages public-key="${publicKey}"></conversation-messages>
-    <conversation-form to="${publicKey}"></conversation-form>
+      <div class="bg" style="background-image:url('${profile.banner}')"></div>
+      <header>
+        <router-link href="/">
+          <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M10 14L3 7.5 10 1" stroke="currentColor" stroke-linecap="square"></path></svg>
+        </router-link>
+        <nostr-profile-row public-key="${publicKey}"${publicKey === account.id ? 'self="self"' : ''}></nostr-profile-row>
+      </header>
+      <conversation-messages public-key="${publicKey}"></conversation-messages>
+      <conversation-form to="${publicKey}"></conversation-form>
     </main>
   `;
 }

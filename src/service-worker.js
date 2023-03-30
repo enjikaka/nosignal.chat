@@ -5,7 +5,7 @@ import './sw-scripts/db/db.js';
 import * as PageRoutes from './sw-scripts/routes/pages/index.js';
 import * as APIRoutes from './sw-scripts/routes/api/index.js';
 
-import { HTMLResponse } from './sw-scripts/helpers.js';
+import { isAuthorized, HTMLResponse } from './sw-scripts/helpers.js';
 
 import init from './sw-scripts/init.js';
 
@@ -13,15 +13,17 @@ init();
 
 precacheAndRoute(self.__WB_MANIFEST);
 
-function renderPage(request) {
+async function renderPage(request) {
   const pathname = new URL(request.url).pathname.split('/pages').join('');
+
+  const _isAuthorized = await isAuthorized();
+
+  if (!_isAuthorized || pathname === '/login') {
+    return PageRoutes.loginHandler(request);
+  }
 
   if (pathname.includes('/conversations')) {
     return PageRoutes.conversationsHandler(request);
-  }
-
-  if (pathname === '/login') {
-    return PageRoutes.loginHandler(request);
   }
 
   if (pathname === '/') {
