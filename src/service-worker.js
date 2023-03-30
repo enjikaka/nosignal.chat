@@ -1,4 +1,4 @@
-import { skipWaiting, clientsClaim, setCatchHandler, registerRoute, NavigationRoute, precacheAndRoute, createHandlerBoundToURL } from './sw-scripts/workbox.js';
+import { clientsClaim, setCatchHandler, registerRoute, NavigationRoute, precacheAndRoute, createHandlerBoundToURL } from './sw-scripts/workbox.js';
 
 import './sw-scripts/db/db.js';
 
@@ -81,5 +81,5 @@ registerRoute(new NavigationRoute(indexHandler, {
   ]
 }));
 
-skipWaiting();
+self.skipWaiting();
 clientsClaim();

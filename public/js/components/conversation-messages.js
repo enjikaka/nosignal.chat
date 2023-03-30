@@ -42,14 +42,21 @@ function ConversationMessages({ publicKey }) {
     es.addEventListener('conversation', e => {
       const message = JSON.parse(e.data);
 
-      if (message.from !== publicKey || message.to !== publicKey) {
+      if (![message.from, message.to].includes(publicKey)) {
         return;
       }
 
       const $msg = dmToEDM(message);
 
-      requestAnimationFrame(() => $section.appendChild($msg));
-      [...$$('encrypted-direct-message.loaded')].pop().scrollIntoView();
+      requestAnimationFrame(() => {
+        $section.appendChild($msg);
+
+        requestAnimationFrame(() => {
+          [...$$('encrypted-direct-message')].pop().addEventListener('loaded', e => {
+            e.target.scrollIntoView();
+          });
+        });
+      });
     });
   });
 }
