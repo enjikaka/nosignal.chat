@@ -2,6 +2,12 @@ import { registerFunctionComponent } from 'webact';
 import { nostrWorker } from '../worker-interface.js';
 import './nostr-profile-row.js';
 
+const publicKeyToConversationLink = publicKey => document.createRange().createContextualFragment(`
+  <router-link href="/conversations/${publicKey}">
+    <nostr-profile-row public-key="${publicKey}"></nostr-profile-row>
+  </router-link>
+`);
+
 function ConversationList() {
   const { css, html, $, postRender } = this;
 
@@ -34,13 +40,17 @@ function ConversationList() {
     const privateKey = await nostrWorker('decodePrivateKey', nsec);
     const publicKey = await nostrWorker('getPublicKey', privateKey);
 
-    const markup = json.filter(p => p !== publicKey).map(publicKey => `
-      <router-link href="/conversations/${publicKey}">
-        <nostr-profile-row public-key="${publicKey}"></nostr-profile-row>
-      </router-link>
-    `).join('');
+    const $conversationEl = json.filter(p => p !== publicKey).map(publicKeyToConversationLink).join('');
 
-    $section.innerHTML += markup;
+    $conversationEl.forEach($convEl => requestAnimationFrame(() => $section.appendChild($convEl)));
+
+    const es = new EventSource('/api/updates');
+
+    es.addEventListener('conversations', e => {
+      if (!$(`[public-key="${e.data}"]`)) {
+        requestAnimationFrame(() => $section.appendChild(publicKeyToConversationLink(e.data)));
+      }
+    });
   });
 }
 

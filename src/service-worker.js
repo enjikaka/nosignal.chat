@@ -48,8 +48,8 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request }) => request.url.includes('/api/changes/'),
-  async ({ request }) => APIRoutes.changesHandler(request)
+  ({ request }) => request.url.includes('/api/updates/'),
+  async ({ request }) => APIRoutes.updatesHandler(request)
 );
 
 registerRoute(

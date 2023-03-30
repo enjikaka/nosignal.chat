@@ -1,4 +1,4 @@
-import { changes } from '../../../helpers.js';
+import { updates } from '../../../helpers.js';
 
 /**
 * @param {Request} request
@@ -7,7 +7,7 @@ export default async function handler(request) {
   if (request.method === 'GET') {
     const stream = new ReadableStream({
       start(controller) {
-        changes.addEventListener('change', e => {
+        updates.addEventListener('update', e => {
           controller.enqueue(`event: ${e.detail.type}\ndata: ${JSON.stringify(e.detail.data)}\n\n`);
         });
       }

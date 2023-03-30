@@ -1,4 +1,4 @@
-export const changes = new EventTarget();
+export const updates = new EventTarget();
 
 export class JSONResponse extends Response {
   /**
