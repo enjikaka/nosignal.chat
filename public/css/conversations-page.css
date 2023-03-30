@@ -1,5 +1,10 @@
 main {
     position: relative;
+    background-color: black;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-flow: column nowrap;
 }
 
 .bg {
@@ -10,12 +15,12 @@ main {
   filter: blur(5px);
   position: fixed;
   inset: -128px;
-  z-index: -1;
+  z-index: 0;
   contain: strict;
 }
 
 header {
-  position: sticky;
+  position: fixed;
   top: 0;
   background-color: hsla(0deg 0% 93.33% / 80%);
   backdrop-filter: blur(8px);
@@ -28,14 +33,15 @@ header {
   contain-intrinsic-height: 64px;
   contain-intrinsic-width: 100vw;
   color: #333;
-  z-index: 1;
+  z-index: 2;
 }
 
 conversation-messages {
-    height: 100%;
     display: block;
-    flex: 1;
-    padding-bottom: 64px;
+    z-index: 1;
+    overflow-y: scroll;
+    position: relative;
+    padding: 64px 0;
 }
 
 conversation-form {
@@ -45,6 +51,7 @@ conversation-form {
     right: 0;
     background-color: hsla(0deg 0% 93.33% / 80%);
     backdrop-filter: blur(8px);
+    z-index: 2;
 }
 
 nostr-profile-row {

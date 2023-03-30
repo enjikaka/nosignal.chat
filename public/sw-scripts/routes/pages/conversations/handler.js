@@ -25,7 +25,7 @@ export default async function handler(request) {
       <router-link href="/">
         <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M10 14L3 7.5 10 1" stroke="currentColor" stroke-linecap="square"></path></svg>
       </router-link>
-      <nostr-profile-row public-key="${publicKey}"></nostr-profile-row>
+      <nostr-profile-row public-key="${publicKey}"${publicKey === account.id ? 'self="self"' : ''}></nostr-profile-row>
     </header>
     <conversation-messages public-key="${publicKey}"></conversation-messages>
     <conversation-form to="${publicKey}"></conversation-form>

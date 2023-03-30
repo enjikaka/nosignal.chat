@@ -86,7 +86,7 @@ export function startMutualSubscription(from, to) {
 
         updates.dispatchEvent(new CustomEvent('update', {
           detail: {
-            type: 'conversation_' + from,
+            type: 'conversation',
             data: message
           }
         }));

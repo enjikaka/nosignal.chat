@@ -1,6 +1,6 @@
 import { registerFunctionComponent } from 'webact';
 
-function NostrProfileRow({ publicKey }) {
+function NostrProfileRow({ publicKey, self }) {
   const { $, css, html, postRender } = this;
 
   html`
@@ -45,7 +45,7 @@ function NostrProfileRow({ publicKey }) {
     const response = await fetch(`/api/profile/${publicKey}`);
     const json = await response.json();
 
-    $span.textContent = json.display_name;
+    $span.textContent = self ? 'Notes to self' : json.display_name;
 
     $img.setAttribute('src', json.picture);
     $img.setAttribute('alt', 'Profile picture for ' + json.display_name);

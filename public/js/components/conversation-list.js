@@ -2,9 +2,9 @@ import { registerFunctionComponent } from 'webact';
 import { nostrWorker } from '../worker-interface.js';
 import './nostr-profile-row.js';
 
-const publicKeyToConversationLink = publicKey => document.createRange().createContextualFragment(`
-  <router-link href="/conversations/${publicKey}">
-    <nostr-profile-row public-key="${publicKey}"></nostr-profile-row>
+const publicKeyToConversationLink = (from, self) => document.createRange().createContextualFragment(`
+  <router-link href="/conversations/${from}">
+    <nostr-profile-row public-key="${from}"${from === self ? ' self="self"' : ''}></nostr-profile-row>
   </router-link>
 `);
 
@@ -38,17 +38,19 @@ function ConversationList() {
 
     const nsec = sessionStorage.getItem('nsec');
     const privateKey = await nostrWorker('decodePrivateKey', nsec);
-    // const publicKey = await nostrWorker('getPublicKey', privateKey);
+    const self = await nostrWorker('getPublicKey', privateKey);
 
-    const $conversations = json.map(publicKeyToConversationLink);
+    const $conversations = json.map(from => publicKeyToConversationLink(from, self));
 
     $conversations.forEach($conversation => requestAnimationFrame(() => $section.appendChild($conversation)));
 
     const es = new EventSource('/api/updates');
 
     es.addEventListener('conversations', e => {
-      if (!$(`[public-key="${e.data}"]`)) {
-        requestAnimationFrame(() => $section.appendChild(publicKeyToConversationLink(e.data)));
+      const data = JSON.parse(e.data);
+
+      if (!$(`[public-key="${data}"]`)) {
+        requestAnimationFrame(() => $section.appendChild(publicKeyToConversationLink(data)));
       }
     });
   });

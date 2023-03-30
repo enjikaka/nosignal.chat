@@ -37,13 +37,19 @@ function ConversationMessages({ publicKey }) {
       }
     }, 20);
 
-    const es = new EventSource('/api/changes');
+    const es = new EventSource('/api/updates');
 
-    es.addEventListener('conversation_' + publicKey, e => {
+    es.addEventListener('conversation', e => {
       const message = JSON.parse(e.data);
+
+      if (message.from !== publicKey || message.to !== publicKey) {
+        return;
+      }
+
       const $msg = dmToEDM(message);
 
       requestAnimationFrame(() => $section.appendChild($msg));
+      [...$$('encrypted-direct-message.loaded')].pop().scrollIntoView();
     });
   });
 }
