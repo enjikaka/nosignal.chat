@@ -1,3 +1,5 @@
+export const changes = new EventTarget();
+
 export class JSONResponse extends Response {
   /**
    * @param {BodyInit} body

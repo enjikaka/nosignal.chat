@@ -1,5 +1,6 @@
 import { nostrTools } from '../workers/modules.js';
 import { saveMessage } from './db/models/message.js';
+import { changes } from './helpers.js';
 
 const pool = new nostrTools.SimplePool();
 
@@ -74,7 +75,16 @@ export function startMutualSubscription(from, to) {
       const to = tags.find(([x]) => x === 'p')[1];
 
       try {
-        await saveMessage({ id, content, created_at, from, to, sig });
+        const message = { id, content, created_at, from, to, sig };
+
+        changes.dispatchEvent(new CustomEvent('change', {
+          detail: {
+            type: 'conversation_' + from,
+            data: message
+          }
+        }));
+
+        await saveMessage(message);
       } catch (e) {
         console.error(e);
       }
