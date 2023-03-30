@@ -24,11 +24,7 @@ function ConversationList() {
   `;
 
   html`
-  <section>
-      <header>
-          <h2>Conversations</h2>
-      </header>
-  </section>
+    <section></section>
   `;
 
   postRender(async () => {

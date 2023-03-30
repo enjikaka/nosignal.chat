@@ -31,7 +31,7 @@ function AppRouter() {
         hostElement.replaceChildren(template.content);
 
         requestAnimationFrame(() => {
-          scriptSources.forEach(src => import(src));
+          scriptSources.forEach(src => import(src).catch(() => { }));
         });
       });
 

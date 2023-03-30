@@ -20,20 +20,12 @@ main {
 }
 
 header {
+  display: flex;
   position: fixed;
   top: 0;
-  background-color: hsla(0deg 0% 93.33% / 80%);
-  backdrop-filter: blur(8px);
-  padding-left: 1em;
-  display: flex;
-  gap: 1em;
-  align-items: center;
-  height: 64px;
-  contain: strict;
-  contain-intrinsic-height: 64px;
-  contain-intrinsic-width: 100vw;
-  color: #333;
   z-index: 2;
+  left: 0;
+  right: 0;
 }
 
 conversation-messages {
