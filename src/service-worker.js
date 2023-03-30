@@ -48,6 +48,11 @@ registerRoute(
 );
 
 registerRoute(
+  ({ request }) => request.url.includes('/api/changes/'),
+  async ({ request }) => APIRoutes.changesHandler(request)
+);
+
+registerRoute(
   ({ request }) => request.url.includes('/api/profile/'),
   async ({ request }) => APIRoutes.profileHandler(request)
 );
