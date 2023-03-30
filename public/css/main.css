@@ -36,6 +36,7 @@ header {
     display: grid;
     place-items: center;
     background-color: hsla(0deg 0% 93.33% / 80%);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     padding-left: 1em;
     gap: 1em;
