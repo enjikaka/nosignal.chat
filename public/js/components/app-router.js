@@ -49,7 +49,7 @@ function AppRouter() {
       }
     });
 
-    if (sessionStorage.getItem('nsec') === null) {
+    if (navigator.serviceWorker.controller !== null && sessionStorage.getItem('nsec') === null)  {
       document.dispatchEvent(new CustomEvent('router:navigate', {
         detail: {
           pathname: '/login'
