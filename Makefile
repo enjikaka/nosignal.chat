@@ -4,4 +4,4 @@ build:
 	npx workbox injectManifest workbox-config.cjs
 
 dev: build
-	deno run --allow-net --allow-read --watch https://deno.land/std@0.170.0/http/file_server.ts --port 1567 public
+	deno run --allow-net --allow-read --watch https://deno.land/std@0.193.0/http/file_server.ts --port 1567 public
