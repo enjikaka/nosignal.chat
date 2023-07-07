@@ -1,6 +1,7 @@
 import { getAccount } from '../../../db/models/account.js';
 import { getSenders, getMessages } from '../../../db/models/message.js';
 import { JSONResponse } from '../../../helpers.js';
+import { sendEvent } from "../../../messages-fetcher.js";
 
 /**
 * @param {Request} request
@@ -29,6 +30,27 @@ export default async function handler(request) {
       messages,
       {
         status: 200
+      }
+    );
+  }
+
+  if (request.method === 'POST') {
+    const signedEvent = await request.json();
+
+    let text = 'ok';
+    let status = 200;
+
+    try {
+      await sendEvent(signedEvent);
+    } catch (e) {
+      text = e;
+      status = 400;
+    }
+
+    return new JSONResponse(
+      text,
+      {
+        status
       }
     );
   }

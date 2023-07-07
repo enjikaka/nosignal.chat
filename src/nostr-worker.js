@@ -36,6 +36,25 @@ async function decryptDirectMessage({ receiver, sender, content }) {
   return result;
 }
 
+async function encryptDirectMessage ({ receiver, sender, content }) {
+  let result;
+
+  try {
+    result = await nostrTools.nip04.encrypt(sender, receiver, content);
+  } catch (e) {
+    console.error(e)
+  }
+
+  return result;
+}
+
+async function signEvent ({ event, privateKey }) {
+  event.id = nostrTools.getEventHash(event);
+  event.sig = nostrTools.getSignature(event, privateKey);
+
+  return event;
+}
+
 onmessage = async ({ data }) => {
   if (data.type === 'decodePrivateKey') {
     postMessage({
@@ -60,6 +79,24 @@ onmessage = async ({ data }) => {
 
   if (data.type === 'decryptDirectMessage') {
     const payload = await decryptDirectMessage(data.payload);
+
+    postMessage({
+      uuid: data.uuid,
+      payload
+    });
+  }
+
+  if (data.type === 'encryptDirectMessage') {
+    const payload = await encryptDirectMessage(data.payload);
+
+    postMessage({
+      uuid: data.uuid,
+      payload
+    });
+  }
+
+  if (data.type === 'signEvent') {
+    const payload = await signEvent(data.payload);
 
     postMessage({
       uuid: data.uuid,

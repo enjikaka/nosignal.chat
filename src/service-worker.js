@@ -70,6 +70,12 @@ registerRoute(
 );
 
 registerRoute(
+  ({ request }) => request.url.includes('/api/conversations'),
+  async ({ request }) => APIRoutes.conversationsHandler(request),
+  'POST'
+);
+
+registerRoute(
   ({ request }) => request.url.includes('/api/account'),
   async ({ request }) => APIRoutes.accountHandler(request),
   'POST'

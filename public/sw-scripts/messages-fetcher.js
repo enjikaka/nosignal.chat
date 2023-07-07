@@ -3,6 +3,15 @@ import { saveMessage } from './db/models/message.js';
 import { updates } from './helpers.js';
 
 const pool = new nostrTools.SimplePool();
+const relays = [
+  'wss://nostr.sidnlabs.nl',
+  'wss://relay.plebstr.com',
+  'wss://relay.snort.social',
+  'wss://relay.damus.io',
+  'wss://nostr.glate.ch',
+  'wss://nos.lol',
+  'wss://noster.online'
+];
 
 async function fetchAndSaveMessage(id) {
   const { content, created_at, pubkey: from, sig, tags } = await pool.get(relays, {
@@ -17,17 +26,20 @@ async function fetchAndSaveMessage(id) {
   }
 }
 
+export function sendEvent (signedEvent) {
+  return new Promise((resolve, reject) => {
+    const pub = pool.publish(relays, signedEvent);
+
+    pub.on('ok', () => resolve())
+    pub.on('failed', reason => reject(reason))
+  });
+}
+
 let sub;
 
 export function startSubscription(publicKey) {
   if (!sub) {
-    sub = pool.sub([
-      'wss://nostr.glate.ch',
-      'wss://nos.lol',
-      'wss://relay.damus.io',
-      'wss://noster.online',
-      'wss://relay.nostr.info'
-    ], [
+    sub = pool.sub(relays, [
       {
         "kinds": [4],
         "#p": [publicKey]
@@ -58,13 +70,7 @@ let mutualSub;
 
 export function startMutualSubscription(from, to) {
   if (!mutualSub) {
-    mutualSub = pool.sub([
-      'wss://nostr.glate.ch',
-      'wss://nos.lol',
-      'wss://relay.damus.io',
-      'wss://noster.online',
-      'wss://relay.nostr.info'
-    ], [
+    mutualSub = pool.sub(relays, [
       {
         "kinds": [4],
         "#p": [from],

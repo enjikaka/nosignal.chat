@@ -12,7 +12,7 @@
     "devDependencies": {
         "dexie": "^3.2.3",
         "esbuild": "^0.17.11",
-        "nostr-tools": "^1.8.1",
+        "nostr-tools": "^1.12.1",
         "webact": "^0.2.23",
         "workbox-cli": "^6.5.4",
         "workbox-core": "^6.5.4",

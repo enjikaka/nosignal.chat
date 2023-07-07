@@ -1,3 +1,4 @@
+import { nostrWorker } from '../worker-interface.js';
 import { registerFunctionComponent } from 'webact';
 
 function ConversationForm({ to }) {
@@ -52,9 +53,42 @@ function ConversationForm({ to }) {
 
   postRender(async () => {
     const $form = $('form');
+    const $input = $('input');
 
-    $form.addEventListener('submit', e => {
+    $form.addEventListener('submit', async e => {
       e.preventDefault();
+
+      const nsec = sessionStorage.getItem('nsec');
+      const privateKey = await nostrWorker('decodePrivateKey', nsec);
+      const publicKey = await nostrWorker('getPublicKey', privateKey);
+
+      const content = await nostrWorker('encryptDirectMessage', {
+        sender: privateKey,
+        receiver: to,
+        content: $input.value
+      });
+
+      const signedEvent = await nostrWorker('signEvent', {
+        event: {
+          kind: 4,
+          pubkey: publicKey,
+          created_at: Math.floor(Date.now() / 1000),
+          tags: [
+            ['p', to]
+          ],
+          content
+        },
+        privateKey
+      });
+
+      const response = await fetch('/api/conversations', {
+        method: 'post',
+        body: JSON.stringify(signedEvent)
+      });
+
+      const text = await response.text();
+
+      console.log(text);
 
       return false;
     });
